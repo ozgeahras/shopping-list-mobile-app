@@ -1,24 +1,25 @@
-import './style.css'
-import javascriptLogo from './javascript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.js'
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
+import {
+  getDatabase,
+  ref,
+  push,
+} from "https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js";
 
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank">
-      <img src="${javascriptLogo}" class="logo vanilla" alt="JavaScript logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite logo to learn more
-    </p>
-  </div>
-`
+const appSettings = {
+  databaseURL: "https://mobile-app-eaef8-default-rtdb.firebaseio.com/",
+};
 
-setupCounter(document.querySelector('#counter'))
+const app = initializeApp(appSettings);
+const database = getDatabase(app);
+const shoppingListInDB = ref(database, "shoppingList");
+
+const inputFieldEl = document.getElementById("input-field");
+const addButtonEl = document.getElementById("add-button");
+
+addButtonEl.addEventListener("click", function () {
+  let inputValue = inputFieldEl.value;
+
+  push(shoppingListInDB, inputValue);
+
+  console.log(inputValue);
+});
