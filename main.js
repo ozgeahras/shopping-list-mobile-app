@@ -26,9 +26,13 @@ addButtonEl.addEventListener("click", function () {
 });
 
 onValue(shoppingListInDB, function (snapshot) {
-  clearShoppingListEl();
-  const itemsArray = Object.entries(snapshot.val());
-  itemsArray.forEach((item) => appendItemToShoppingListEl(item));
+  if (snapshot.exists()) {
+    clearShoppingListEl();
+    const itemsArray = Object.entries(snapshot.val());
+    itemsArray.forEach((item) => appendItemToShoppingListEl(item));
+  } else {
+    shoppingListEl.innerHTML = "No items here... yet";
+  }
 });
 
 function clearShoppingListEl() {
